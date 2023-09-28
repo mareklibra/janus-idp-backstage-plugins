@@ -83,7 +83,7 @@ Response:
   {
     "id": 2,
     "subject": "my second message",
-    "body": "I still dont have anything to talk about"
+    "body": "I still don't have anything to talk about"
   }
 ]
 ```
