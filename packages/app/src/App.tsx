@@ -19,6 +19,12 @@ import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 
 import { ScalprumProvider } from '@scalprum/react-core';
 
+// import { ScaffolderPage } from '@backstage/plugin-scaffolder';
+import {
+  OrchestratorPage,
+  // OrchestratorScaffolderTemplateCard,
+} from '@janus-idp/backstage-plugin-orchestrator';
+
 import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
 import { Root } from './components/Root';
@@ -73,6 +79,18 @@ export const AppBase = () => {
                 element={<Component {...props} />}
               />
             ))}
+
+            {/* <Route
+              path="/create"
+              element={
+                <ScaffolderPage
+                  components={{
+                    TemplateCardComponent: OrchestratorScaffolderTemplateCard,
+                  }}
+                />
+              }
+            /> */}
+            <Route path="/orchestrator" element={<OrchestratorPage />} />
           </FlatRoutes>
         </Root>
       </AppRouter>
