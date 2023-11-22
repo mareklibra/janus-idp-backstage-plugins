@@ -26,7 +26,7 @@ export const Router = () => {
         path={workflowDefinitionsRouteRef.path}
         element={<WorkflowDefinitionViewerPage />}
       />
-      <Route
+      <Route // TODO: Replace by a "tab" containing WorflowRunList component
         path={workflowInstancesRouteRef.path}
         element={<WorkflowInstancesViewerPage />}
       />

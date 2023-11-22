@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAsync } from 'react-use';
 
 import {
-  Content,
   Progress,
   ResponseErrorPanel,
   TabbedLayout,
@@ -18,6 +17,7 @@ import { WorkflowItem } from '@janus-idp/backstage-plugin-orchestrator-common';
 import { orchestratorApiRef } from '../../api';
 import { newWorkflowRef, workflowInstancesRouteRef } from '../../routes';
 import { BaseOrchestratorPage } from './BaseOrchestratorPage';
+import { WorkflowRunList } from './WorkflowRunList';
 import { WorkflowsTable } from './WorkflowsTable';
 
 export const OrchestratorPage = () => {
@@ -66,9 +66,7 @@ export const OrchestratorPage = () => {
           path={workflowInstancesRouteRef.path}
           title="Workflow runs"
         >
-          <Content>
-            This is the "Workflows run (aka instances)" tab content.
-          </Content>
+          <WorkflowRunList />
         </TabbedLayout.Route>
       </TabbedLayout>
     </BaseOrchestratorPage>
