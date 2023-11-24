@@ -5,30 +5,30 @@ import { useAsync } from 'react-use';
 import { SelectItem, Table, TableColumn } from '@backstage/core-components';
 import { useApi, useRouteRef } from '@backstage/core-plugin-api';
 
-import { Box } from '@material-ui/core';
-import moment from 'moment';
+import { Box, makeStyles } from '@material-ui/core';
+
+import { WorkflowCategory } from '@janus-idp/backstage-plugin-orchestrator-common';
 
 import { orchestratorApiRef } from '../../api';
-import { workflowInstanceRouteRef } from '../../routes';
+import { nextWorkflowInstanceRouteRef } from '../../routes';
 import { ProcessInstanceStatus } from './ProcessInstanceStatus';
 import { StatusSelector } from './StatusSelector';
 import { TableExpandCollapse } from './TableExpandCollapse';
+import { firstLetterCapital } from './utils';
+import {
+  mapProcessInstanceToDetails,
+  WorkflowRunDetail,
+} from './WorkflowInstancePageContent';
 import { WorkflowSelector } from './WorkflowSelector';
 import { WrapperInfoCard } from './WrapperInfoCard';
 
-const DASHES = '---';
-interface Row {
-  id: string;
-  name: string;
-  workflow: string;
-  status: string;
-  started: string;
-  duration: string;
-  component: string;
-  parentInstanceId?: string;
-}
+const useStyles = makeStyles(_ => ({
+  link: {
+    color: '-webkit-link',
+  },
+}));
 
-const DetailPanel = ({ rowData }: { rowData: Row }) => {
+const DetailPanel = ({ rowData }: { rowData: WorkflowRunDetail }) => {
   return (
     <div>
       TODO - render timeline component based on {JSON.stringify(rowData)}
@@ -38,50 +38,39 @@ const DetailPanel = ({ rowData }: { rowData: Row }) => {
 
 export const WorkflowRunsTabContent = () => {
   const orchestratorApi = useApi(orchestratorApiRef);
-  const workflowInstanceLink = useRouteRef(workflowInstanceRouteRef);
+  const workflowInstanceLink = useRouteRef(nextWorkflowInstanceRouteRef);
+  const styles = useStyles();
   const [workflow, setWorkflow] = useState<string>();
   const [status, onChangeStatus] = useState<string>();
   const [isExpanded, setIsExpanded] = React.useState(true);
 
   const { loading, error, value } = useAsync(async () => {
     const instances = await orchestratorApi.getInstances();
-    const clonedData: Row[] = instances
-      .filter(
-        instance =>
-          !instance.parentProcessInstanceId /* TODO: verify that this is truely filtering top-level instances */,
-      )
-      .map(instance => {
-        const start = moment(instance.start?.toString());
-        const end = moment(instance.end?.toString());
-        const duration = moment.duration(start.diff(end));
-        const name = instance.processName || instance.processId; /* TODO */
+    const clonedData: WorkflowRunDetail[] = instances.map(
+      mapProcessInstanceToDetails,
+    );
 
-        const row: Row = {
-          id: instance.id,
-          name,
-          workflow: instance.processName || instance.processId,
-          started: start.format('MMMM DD, YYYY'),
-          duration: duration.humanize(),
-          status: instance.state,
-          component: instance.source || DASHES /* TODO: is that correct? */,
-          parentInstanceId: instance.parentProcessInstance?.id,
-        };
-
-        return row;
-      });
     return clonedData;
   }, [orchestratorApi]);
 
   const columns = React.useMemo(
-    (): TableColumn<Row>[] => [
+    (): TableColumn<WorkflowRunDetail>[] => [
       {
         title: 'Name',
-        render: data => (
-          <Link to={workflowInstanceLink({ instanceId: data.id })}>
-            {data.name}
-          </Link>
-        ),
+        render: data =>
+          data.category?.toLowerCase() ===
+          WorkflowCategory.ASSESSMENT.toLowerCase() ? (
+            <Link
+              className={styles.link}
+              to={workflowInstanceLink({ instanceId: data.id })}
+            >
+              {data.name}
+            </Link>
+          ) : (
+            data.name
+          ),
       },
+      { title: 'Type', render: data => firstLetterCapital(data.category) },
       { title: 'Workflow', field: 'workflow' },
       {
         title: 'Status',
@@ -91,7 +80,7 @@ export const WorkflowRunsTabContent = () => {
       { title: 'Duration', field: 'duration' },
       { title: 'Component', field: 'component' },
     ],
-    [workflowInstanceLink],
+    [styles.link, workflowInstanceLink],
   );
 
   const workflows: SelectItem[] = React.useMemo(
@@ -111,7 +100,7 @@ export const WorkflowRunsTabContent = () => {
   const filteredData = React.useMemo(
     () =>
       (value || []).filter(
-        (row: Row) =>
+        (row: WorkflowRunDetail) =>
           (!workflow || row.workflow === workflow) &&
           (!status || row.status === status),
       ),

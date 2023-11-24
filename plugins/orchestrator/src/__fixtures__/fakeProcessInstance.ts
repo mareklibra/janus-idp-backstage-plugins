@@ -1,6 +1,7 @@
 import {
   ProcessInstance,
   ProcessInstanceState,
+  WorkflowCategory,
 } from '@janus-idp/backstage-plugin-orchestrator-common';
 
 import { fakeWorkflowOverviewList } from './fakeWorkflowOverviewList';
@@ -23,6 +24,7 @@ export const fakeProcessInstance1: ProcessInstance = {
   endpoint: 'enpoint/foo',
   serviceUrl: 'service/bar',
   source: 'my-source',
+  category: WorkflowCategory.INFRASTRUCTURE,
 };
 
 export const fakeProcessInstance2: ProcessInstance = {
@@ -38,6 +40,7 @@ export const fakeProcessInstance2: ProcessInstance = {
   endpoint: 'enpoint/foo',
   serviceUrl: 'service/bar',
   source: 'my-source',
+  category: WorkflowCategory.ASSESSMENT,
 };
 
 export const fakeProcessInstance3: ProcessInstance = {
@@ -52,6 +55,7 @@ export const fakeProcessInstance3: ProcessInstance = {
   endpoint: 'enpoint/foo',
   serviceUrl: 'service/bar',
   source: 'my-source',
+  category: WorkflowCategory.INFRASTRUCTURE,
 };
 
 export const fakeProcessInstance4: ProcessInstance = {
@@ -66,6 +70,7 @@ export const fakeProcessInstance4: ProcessInstance = {
   endpoint: 'enpoint/foo',
   serviceUrl: 'service/bar',
   source: 'my-source',
+  category: WorkflowCategory.INFRASTRUCTURE,
 };
 
 export const fakeProcessInstances = [
