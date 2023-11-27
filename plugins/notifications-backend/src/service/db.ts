@@ -1,21 +1,19 @@
 import { Config } from '@backstage/config';
 
 import knex, { Knex } from 'knex';
+import merge from 'lodash/merge';
 
 // initDB
 // creates DB client and tables
 export async function initDB(dbConfig: Config): Promise<Knex<any, any>> {
   // create db client
-  const dbClient = knex({
-    client: dbConfig.getString('client'),
-    connection: {
-      host: dbConfig.getString('connection.host'),
-      port: dbConfig.getNumber('connection.port'),
-      user: dbConfig.getString('connection.user'),
-      password: dbConfig.getString('connection.password'),
-      database: 'backstage_plugin_notifications',
-    },
-  });
+  const knexConfig = merge(
+    {},
+    { connection: { database: 'backstage_plugin_notifications' } },
+    dbConfig.get(),
+    dbConfig.getOptional('knexConfig'),
+  );
+  const dbClient = knex(knexConfig);
 
   // create tables
   if (!(await dbClient.schema.hasTable('messages'))) {
@@ -61,7 +59,11 @@ export async function initDB(dbConfig: Config): Promise<Knex<any, any>> {
     await dbClient.schema.createTable('actions', table => {
       table.uuid('id', { primaryKey: true }).defaultTo(dbClient.fn.uuid());
       table.uuid('message_id').notNullable().index();
-      table.foreign('message_id').references('id').inTable('messages');
+      table
+        .foreign('message_id')
+        .references('id')
+        .inTable('messages')
+        .onDelete('CASCADE');
       table.string('url').notNullable();
       table.string('title').notNullable();
     });
