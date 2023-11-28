@@ -24,6 +24,8 @@ import MapIcon from '@material-ui/icons/MyLocation';
 import SearchIcon from '@material-ui/icons/Search';
 import { ScalprumComponent } from '@scalprum/react-core';
 
+import { NotificationsActiveIcon } from '@janus-idp/plugin-notifications';
+
 import LogoFull from './LogoFull';
 import LogoIcon from './LogoIcon';
 
@@ -76,6 +78,11 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         </SidebarScrollWrapper>
       </SidebarGroup>
       <SidebarDivider />
+      <SidebarItem
+        icon={NotificationsActiveIcon}
+        to="notifications"
+        text="Notifications"
+      />
       <SidebarSpace />
       <SidebarDivider />
       <SidebarGroup
