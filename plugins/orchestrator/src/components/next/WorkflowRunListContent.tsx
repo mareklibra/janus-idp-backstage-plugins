@@ -35,10 +35,10 @@ const DetailPanel = ({ rowData }: { rowData: Row }) => {
   );
 };
 
-export const WorkflowRunList = () => {
+export const WorkflowRunListContent = () => {
   const orchestratorApi = useApi(orchestratorApiRef);
   const workflowInstanceLink = useRouteRef(workflowInstanceRouteRef);
-  const [workflow, onChangeWorkflow] = useState<string>();
+  const [workflow, setWorkflow] = useState<string>();
   const [status, onChangeStatus] = useState<string>();
   const [isExpanded, setIsExpanded] = React.useState(true);
 
@@ -107,33 +107,35 @@ export const WorkflowRunList = () => {
     [value],
   );
 
-  const selectors = (
-    <>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-        <Box>
-          <WorkflowSelector
-            workflows={workflows}
-            onChange={onChangeWorkflow}
-            value={workflow}
-          />
-        </Box>
-        <Box paddingLeft="1rem">
-          <StatusSelector onChange={onChangeStatus} value={status} />
-        </Box>
-        <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'flex-end' }}>
-          <TableExpandCollapse
-            isExpanded={isExpanded}
-            setIsExpanded={setIsExpanded}
-          />
-        </Box>
-      </Box>
-    </>
+  const filteredData = React.useMemo(
+    () =>
+      (value || []).filter(
+        (row: Row) =>
+          (!workflow || row.workflow === workflow) &&
+          (!status || row.status === status),
+      ),
+    [status, value, workflow],
   );
 
-  const filteredData = (value || []).filter(
-    (row: Row) =>
-      (!workflow || row.workflow === workflow) &&
-      (!status || row.status === status),
+  const selectors = (
+    <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+      <Box>
+        <WorkflowSelector
+          workflows={workflows}
+          onChange={setWorkflow}
+          value={workflow}
+        />
+      </Box>
+      <Box paddingLeft="1rem">
+        <StatusSelector onChange={onChangeStatus} value={status} />
+      </Box>
+      <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'flex-end' }}>
+        <TableExpandCollapse
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
+        />
+      </Box>
+    </Box>
   );
 
   return (
