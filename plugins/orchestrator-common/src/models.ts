@@ -78,7 +78,7 @@ export interface ProcessInstance {
   nodeDefinitions?: TriggerableNode[];
   source?: string;
   category?: WorkflowCategory;
-  description: WorkflowDefinition['description'];
+  description?: WorkflowDefinition['description'];
 }
 
 export enum JobStatus {

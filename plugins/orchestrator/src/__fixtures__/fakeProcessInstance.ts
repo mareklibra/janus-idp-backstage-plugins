@@ -25,6 +25,7 @@ export const fakeProcessInstance1: ProcessInstance = {
   serviceUrl: 'service/bar',
   source: 'my-source',
   category: WorkflowCategory.INFRASTRUCTURE,
+  description: 'test description 1',
 };
 
 export const fakeProcessInstance2: ProcessInstance = {
@@ -41,6 +42,7 @@ export const fakeProcessInstance2: ProcessInstance = {
   serviceUrl: 'service/bar',
   source: 'my-source',
   category: WorkflowCategory.ASSESSMENT,
+  description: 'test description 2',
 };
 
 export const fakeProcessInstance3: ProcessInstance = {
@@ -56,6 +58,7 @@ export const fakeProcessInstance3: ProcessInstance = {
   serviceUrl: 'service/bar',
   source: 'my-source',
   category: WorkflowCategory.INFRASTRUCTURE,
+  description: 'test description 3',
 };
 
 export const fakeProcessInstance4: ProcessInstance = {
@@ -71,6 +74,7 @@ export const fakeProcessInstance4: ProcessInstance = {
   serviceUrl: 'service/bar',
   source: 'my-source',
   category: WorkflowCategory.INFRASTRUCTURE,
+  description: 'test description 4',
 };
 
 export const fakeProcessInstances = [

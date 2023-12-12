@@ -89,6 +89,14 @@ export const WorkflowInstancePageContent = ({
 
   const nextWorkflows: { title: string; link: string }[] = [
     // TODO(mlibra): get data - for assessment workflows only
+    // {
+    //   title: 'Sample workflow',
+    //   link: 'http://foo',
+    // },
+    // {
+    //   title: 'Another workflow',
+    //   link: 'http://foo',
+    // },
   ];
 
   return (
@@ -127,11 +135,12 @@ export const WorkflowInstancePageContent = ({
           </Grid>
         )}
 
+        {/* TODO(mlibra): Under discussion, probably not needed
         <Grid item xs={12}>
           <InfoCard title="Status" divider={false}>
             TODO: status as timeline
           </InfoCard>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Content>
   );
