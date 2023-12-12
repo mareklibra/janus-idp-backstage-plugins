@@ -28,13 +28,14 @@ const useStyles = makeStyles(_ => ({
   },
 }));
 
-const DetailPanel = ({ rowData }: { rowData: WorkflowRunDetail }) => {
-  return (
-    <div>
-      TODO - render timeline component based on {JSON.stringify(rowData)}
-    </div>
-  );
-};
+// TODO(mlibra): Under discussion - the timeline component will not be probably used.
+// const DetailPanel = ({ rowData }: { rowData: WorkflowRunDetail }) => {
+//   return (
+//     <div>
+//       TODO - render timeline component based on {JSON.stringify(rowData)}
+//     </div>
+//   );
+// };
 
 export const WorkflowRunsTabContent = () => {
   const orchestratorApi = useApi(orchestratorApiRef);
@@ -140,7 +141,7 @@ export const WorkflowRunsTabContent = () => {
           title="Workflow Runs"
           columns={columns}
           data={filteredData}
-          detailPanel={DetailPanel}
+          // detailPanel={DetailPanel}
           parentChildData={(row, rows) =>
             rows.find(a => a.id === row.parentInstanceId)
           }

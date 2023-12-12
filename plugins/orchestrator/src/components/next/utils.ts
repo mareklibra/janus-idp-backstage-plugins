@@ -1,6 +1,6 @@
 import { ProcessInstanceState } from '@janus-idp/backstage-plugin-orchestrator-common';
 
-export const firstLetterCapital = (text?: string) => {
+export const firstLetterCapital = (text: string | undefined) => {
   if (!text) {
     return text;
   }

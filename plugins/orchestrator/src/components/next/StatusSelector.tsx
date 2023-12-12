@@ -54,10 +54,12 @@ export const StatusSelector = ({
       ProcessInstanceState.Error,
       ProcessInstanceState.Aborted,
       ProcessInstanceState.Suspended,
-    ].map(status => ({
-      label: humanizeProcessInstanceState(status),
-      value: status,
-    })),
+    ].map(
+      (status): SelectItem => ({
+        label: humanizeProcessInstanceState(status) || '',
+        value: status,
+      }),
+    ),
   ];
 
   const selected = statuses?.find(item => item.value === value)?.value;

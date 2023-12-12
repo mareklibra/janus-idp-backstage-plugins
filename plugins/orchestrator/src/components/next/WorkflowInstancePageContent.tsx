@@ -23,7 +23,6 @@ export type WorkflowRunDetail = {
   status: string;
   started: string;
   duration: string;
-  component?: string;
   category?: string;
   parentInstanceId?: string;
   description?: string;
@@ -45,7 +44,6 @@ export const mapProcessInstanceToDetails = (
     duration: duration.humanize(),
     category: instance.category,
     status: instance.state,
-    component: instance.source /* TODO(mlibra): is that correct? */,
     description: instance.description,
     parentInstanceId: instance.parentProcessInstance?.id,
   };
@@ -86,7 +84,6 @@ export const WorkflowInstancePageContent = ({
     },
     { label: 'Duration', value: details.duration },
     { label: 'Started', value: details.started },
-    { label: 'Component', value: details.component },
     { label: 'Description', value: details.description },
   ];
 
