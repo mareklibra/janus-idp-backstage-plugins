@@ -12,9 +12,9 @@ import moment from 'moment';
 import { ProcessInstance } from '@janus-idp/backstage-plugin-orchestrator-common';
 
 import { nextExecuteWorkflowRouteRef } from '../../routes';
+import { firstLetterCapital } from '../../utils';
 import { ProcessInstanceStatus } from './ProcessInstanceStatus';
 import { WorkflowOption } from './types';
-import { firstLetterCapital } from './utils';
 
 export type WorkflowRunDetail = {
   id: string;

@@ -11,10 +11,10 @@ import { WorkflowCategory } from '@janus-idp/backstage-plugin-orchestrator-commo
 
 import { orchestratorApiRef } from '../../api';
 import { nextWorkflowInstanceRouteRef } from '../../routes';
+import { firstLetterCapital } from '../../utils';
 import { ProcessInstanceStatus } from './ProcessInstanceStatus';
 import { StatusSelector } from './StatusSelector';
 import { TableExpandCollapse } from './TableExpandCollapse';
-import { firstLetterCapital } from './utils';
 import {
   mapProcessInstanceToDetails,
   WorkflowRunDetail,

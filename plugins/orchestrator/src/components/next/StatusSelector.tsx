@@ -6,7 +6,7 @@ import { makeStyles, Typography } from '@material-ui/core';
 
 import { ProcessInstanceState } from '@janus-idp/backstage-plugin-orchestrator-common';
 
-import { humanizeProcessInstanceState } from './utils';
+import { humanizeProcessInstanceState } from '../../utils';
 
 const useStyles = makeStyles(theme => ({
   root: {
