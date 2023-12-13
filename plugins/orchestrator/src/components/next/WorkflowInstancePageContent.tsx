@@ -2,18 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Content, InfoCard } from '@backstage/core-components';
+import { useRouteRef } from '@backstage/core-plugin-api';
 import { AboutField } from '@backstage/plugin-catalog';
 
 import { Grid, makeStyles } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import moment from 'moment';
 
-import {
-  ProcessInstance,
-  WorkflowCategory,
-} from '@janus-idp/backstage-plugin-orchestrator-common';
+import { ProcessInstance } from '@janus-idp/backstage-plugin-orchestrator-common';
 
+import { nextExecuteWorkflowRouteRef } from '../../routes';
 import { ProcessInstanceStatus } from './ProcessInstanceStatus';
+import { WorkflowOption } from './types';
 import { firstLetterCapital } from './utils';
 
 export type WorkflowRunDetail = {
@@ -26,6 +26,7 @@ export type WorkflowRunDetail = {
   category?: string;
   parentInstanceId?: string;
   description?: string;
+  workflowOptions?: { [key: string]: WorkflowOption | WorkflowOption[] };
 };
 
 export const mapProcessInstanceToDetails = (
@@ -35,6 +36,17 @@ export const mapProcessInstanceToDetails = (
   const end = moment(instance.end?.toString());
   const duration = moment.duration(start.diff(end));
   const name = instance.processName || instance.processId;
+
+  let variables: Record<string, unknown> | undefined;
+  if (typeof instance?.variables === 'string') {
+    variables = JSON.parse(instance?.variables);
+  } else {
+    variables = instance?.variables;
+  }
+
+  const workflowOptions: WorkflowRunDetail['workflowOptions'] =
+    // @ts-ignore
+    variables?.workflowdata?.workflowOptions;
 
   const row: WorkflowRunDetail = {
     id: instance.id,
@@ -46,6 +58,7 @@ export const mapProcessInstanceToDetails = (
     status: instance.state,
     description: instance.description,
     parentInstanceId: instance.parentProcessInstance?.id,
+    workflowOptions,
   };
 
   return row;
@@ -66,6 +79,7 @@ export const WorkflowInstancePageContent = ({
   processInstance?: ProcessInstance;
 }) => {
   const styles = useStyles();
+  const executeWorkflowLink = useRouteRef(nextExecuteWorkflowRouteRef);
 
   if (!processInstance) {
     return <Skeleton />;
@@ -87,17 +101,22 @@ export const WorkflowInstancePageContent = ({
     { label: 'Description', value: details.description },
   ];
 
-  const nextWorkflows: { title: string; link: string }[] = [
-    // TODO(mlibra): get data - for assessment workflows only
-    // {
-    //   title: 'Sample workflow',
-    //   link: 'http://foo',
-    // },
-    // {
-    //   title: 'Another workflow',
-    //   link: 'http://foo',
-    // },
-  ];
+  const nextWorkflows: { title: string; link: string }[] = [];
+
+  if (details.workflowOptions) {
+    Object.entries(details.workflowOptions).forEach(([_, value]) => {
+      const workflowOptions: WorkflowOption[] = Array.isArray(value)
+        ? value
+        : [value];
+      workflowOptions.forEach(workflowOption => {
+        // Produce flat structure
+        nextWorkflows.push({
+          title: workflowOption.name,
+          link: executeWorkflowLink({ workflowId: workflowOption.id }),
+        });
+      });
+    });
+  }
 
   return (
     <Content noPadding>
@@ -114,28 +133,31 @@ export const WorkflowInstancePageContent = ({
           </InfoCard>
         </Grid>
 
-        {details.category === WorkflowCategory.ASSESSMENT && (
-          <Grid item xs={6}>
-            <InfoCard
-              title="Assessment Results"
-              subheader="Select your next workflow"
-              divider={false}
-              className={styles.card}
-            >
-              <Grid container spacing={3}>
-                {nextWorkflows.map(item => (
-                  <Grid item xs={4} key={item.title}>
-                    <Link to={item.link} className={styles.link}>
-                      {item.title}
-                    </Link>
-                  </Grid>
-                ))}
-              </Grid>
-            </InfoCard>
-          </Grid>
-        )}
+        {
+          /* details.category === WorkflowCategory.ASSESSMENT */ nextWorkflows.length >
+            0 && (
+            <Grid item xs={6}>
+              <InfoCard
+                title="Assessment Results"
+                subheader="Select your next workflow"
+                divider={false}
+                className={styles.card}
+              >
+                <Grid container spacing={3}>
+                  {nextWorkflows.map(item => (
+                    <Grid item xs={4} key={item.title}>
+                      <Link to={item.link} className={styles.link}>
+                        {item.title}
+                      </Link>
+                    </Grid>
+                  ))}
+                </Grid>
+              </InfoCard>
+            </Grid>
+          )
+        }
 
-        {/* TODO(mlibra): Under discussion, probably not needed
+        {/* TODO(mlibra): Under discussion, probably not needed - FLPATH-698
         <Grid item xs={12}>
           <InfoCard title="Status" divider={false}>
             TODO: status as timeline

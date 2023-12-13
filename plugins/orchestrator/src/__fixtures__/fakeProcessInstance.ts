@@ -20,12 +20,32 @@ export const fakeProcessInstance1: ProcessInstance = {
   end: new Date(baseDate.getTime() + 13 * HOUR),
   lastUpdate: new Date(baseDate.getTime() + DAY),
   nodes: [],
-  variables: {},
   endpoint: 'enpoint/foo',
   serviceUrl: 'service/bar',
   source: 'my-source',
   category: WorkflowCategory.INFRASTRUCTURE,
   description: 'test description 1',
+  variables: {
+    foo: 'bar',
+    workflowdata: {
+      workflowOptions: {
+        'my-category': {
+          id: 'next-workflow-1',
+          name: 'Next Workflow One',
+        },
+        'my-secod-category': [
+          {
+            id: 'next-workflow-20',
+            name: 'Next Workflow Twenty',
+          },
+          {
+            id: 'next-workflow-21',
+            name: 'Next Workflow Twenty One',
+          },
+        ],
+      },
+    },
+  },
 };
 
 export const fakeProcessInstance2: ProcessInstance = {
