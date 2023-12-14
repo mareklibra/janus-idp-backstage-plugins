@@ -72,7 +72,6 @@ export const WorkflowRunsTabContent = () => {
           ),
       },
       { title: 'Type', render: data => firstLetterCapital(data.category) },
-      { title: 'Workflow', field: 'workflow' },
       {
         title: 'Status',
         render: data => <ProcessInstanceStatus status={data.status} />,
@@ -80,6 +79,7 @@ export const WorkflowRunsTabContent = () => {
       { title: 'Started', field: 'started' },
       { title: 'Duration', field: 'duration' },
       { title: 'Component', field: 'component' },
+      { title: 'ID', field: 'id' },
     ],
     [styles.link, workflowInstanceLink],
   );

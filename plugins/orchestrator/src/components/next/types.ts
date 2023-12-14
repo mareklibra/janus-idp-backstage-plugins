@@ -1,4 +1,4 @@
-export interface WorkflowOption {
+export interface WorkflowSuggestion {
   id: string;
   name: string;
 }

@@ -14,7 +14,7 @@ import { ProcessInstance } from '@janus-idp/backstage-plugin-orchestrator-common
 import { nextExecuteWorkflowRouteRef } from '../../routes';
 import { firstLetterCapital } from '../../utils';
 import { ProcessInstanceStatus } from './ProcessInstanceStatus';
-import { WorkflowOption } from './types';
+import { WorkflowSuggestion } from './types';
 
 export type WorkflowRunDetail = {
   id: string;
@@ -26,7 +26,9 @@ export type WorkflowRunDetail = {
   category?: string;
   parentInstanceId?: string;
   description?: string;
-  workflowOptions?: { [key: string]: WorkflowOption | WorkflowOption[] };
+  nextWorflowSuggestions?: {
+    [key: string]: WorkflowSuggestion | WorkflowSuggestion[];
+  };
 };
 
 export const mapProcessInstanceToDetails = (
@@ -44,21 +46,21 @@ export const mapProcessInstanceToDetails = (
     variables = instance?.variables;
   }
 
-  const workflowOptions: WorkflowRunDetail['workflowOptions'] =
+  const nextWorflowSuggestions: WorkflowRunDetail['nextWorflowSuggestions'] =
     // @ts-ignore
     variables?.workflowdata?.workflowOptions;
 
   const row: WorkflowRunDetail = {
     id: instance.id,
     name,
-    workflow: instance.processName || instance.processId,
-    started: start.format('MMMM DD, YYYY'),
+    workflow: name,
+    started: start.format('MMM DD, YYYY LTS'),
     duration: duration.humanize(),
     category: instance.category,
     status: instance.state,
     description: instance.description,
     parentInstanceId: instance.parentProcessInstance?.id,
-    workflowOptions,
+    nextWorflowSuggestions,
   };
 
   return row;
@@ -92,27 +94,28 @@ export const WorkflowInstancePageContent = ({
       label: 'Type',
       value: firstLetterCapital(details.category),
     },
+    { label: 'Started', value: details.started },
+    { label: 'Duration', value: details.duration },
     {
       label: 'Status',
       value: <ProcessInstanceStatus status={details.status} />,
     },
-    { label: 'Duration', value: details.duration },
-    { label: 'Started', value: details.started },
+    { label: 'ID', value: details.id },
     { label: 'Description', value: details.description },
   ];
 
   const nextWorkflows: { title: string; link: string }[] = [];
 
-  if (details.workflowOptions) {
-    Object.entries(details.workflowOptions).forEach(([_, value]) => {
-      const workflowOptions: WorkflowOption[] = Array.isArray(value)
+  if (details.nextWorflowSuggestions) {
+    Object.entries(details.nextWorflowSuggestions).forEach(([_, value]) => {
+      const nextWorflowSuggestions: WorkflowSuggestion[] = Array.isArray(value)
         ? value
         : [value];
-      workflowOptions.forEach(workflowOption => {
+      nextWorflowSuggestions.forEach(nextWorflowSuggestion => {
         // Produce flat structure
         nextWorkflows.push({
-          title: workflowOption.name,
-          link: executeWorkflowLink({ workflowId: workflowOption.id }),
+          title: nextWorflowSuggestion.name,
+          link: executeWorkflowLink({ workflowId: nextWorflowSuggestion.id }),
         });
       });
     });
