@@ -9,9 +9,9 @@ backend:
   # Used for enabling authentication, secret is shared by all backend plugins
   # See https://backstage.io/docs/auth/service-to-service-auth for
   # information on the format
-  # auth:
-  #   keys:
-  #     - secret: ${BACKEND_SECRET}
+  auth:
+    keys:
+      - secret: ${BACKEND_SECRET}
   baseUrl: http://localhost:7007
   listen:
     port: 7007
@@ -85,7 +85,12 @@ techdocs:
 
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: 410fe3c2032712720383
+        clientSecret: ${GITHUB_CLIENT_SECRET}
 
 scaffolder:
   {}
@@ -146,3 +151,6 @@ dynamicPlugins:
         - bindTarget: 'remotePlugins.Scaffolder.scaffolderPlugin.externalRoutes'
           bindMap:
             registerComponent: 'catalogImportPlugin.routes.importPage'
+
+notifications:
+  externalCallerSecret: mysecret

@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { createApp } from '@backstage/app-defaults';
 import { BackstageApp } from '@backstage/core-app-api';
-import { AnyApiFactory } from '@backstage/core-plugin-api';
+import { SignInPage } from '@backstage/core-components';
+import { AnyApiFactory, githubAuthApiRef } from '@backstage/core-plugin-api';
 import { apiDocsPlugin } from '@backstage/plugin-api-docs';
 import { catalogPlugin } from '@backstage/plugin-catalog';
 import { catalogImportPlugin } from '@backstage/plugin-catalog-import';
@@ -125,6 +126,23 @@ const DynamicRoot = ({
     if (!app.current) {
       app.current = createApp({
         apis,
+        components: {
+          SignInPage: props => (
+            <SignInPage
+              {...props}
+              auto
+              providers={[
+                // guest,
+                {
+                  id: 'github-auth-provider',
+                  title: 'GitHub',
+                  message: 'Sign in using GitHub',
+                  apiRef: githubAuthApiRef,
+                },
+              ]}
+            />
+          ),
+        },
         bindRoutes({ bind }) {
           // Static bindings
           bind(apiDocsPlugin.externalRoutes, {

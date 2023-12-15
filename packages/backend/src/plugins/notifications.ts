@@ -11,6 +11,7 @@ export default async function createPlugin(
   // your backend plugin needs to be able to start!
 
   return await createRouter({
+    identity: env.identity,
     logger: env.logger,
     permissions: env.permissions,
     tokenManager: env.tokenManager,
