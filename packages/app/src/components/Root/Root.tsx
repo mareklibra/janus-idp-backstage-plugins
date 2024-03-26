@@ -24,6 +24,8 @@ import MapIcon from '@material-ui/icons/MyLocation';
 import SearchIcon from '@material-ui/icons/Search';
 import { ScalprumComponent } from '@scalprum/react-core';
 
+import { OrchestratorIcon } from '@janus-idp/backstage-plugin-orchestrator';
+
 import LogoFull from './LogoFull';
 import LogoIcon from './LogoIcon';
 
@@ -74,6 +76,11 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarScrollWrapper>
           <SidebarItem icon={MapIcon} to="tech-radar" text="Tech Radar" />
         </SidebarScrollWrapper>
+        <SidebarItem
+          icon={OrchestratorIcon}
+          to="orchestrator"
+          text="Orchestrator"
+        />
       </SidebarGroup>
       <SidebarDivider />
       <SidebarSpace />
