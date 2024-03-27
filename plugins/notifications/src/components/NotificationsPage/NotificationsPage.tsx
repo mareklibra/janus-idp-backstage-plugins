@@ -37,7 +37,7 @@ export const NotificationsPage = () => {
 
   return (
     <Page themeId="tool">
-      <Header title="Notifications" />
+      <Header title="Notifications Redeployed" />
       <Content noPadding>
         <RoutedTabs routes={routes} />
       </Content>
