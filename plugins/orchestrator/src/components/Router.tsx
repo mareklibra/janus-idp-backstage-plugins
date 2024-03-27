@@ -11,7 +11,10 @@ import { OrchestratorPage } from './OrchestratorPage';
 import { WorkflowDefinitionViewerPage } from './WorkflowDefinitionViewerPage';
 import { WorkflowInstancePage } from './WorkflowInstancePage';
 
+console.log('---- Orchestrator top level logging from Router');
+
 export const Router = () => {
+  console.log('---- Orchestrator Router compoennt');
   return (
     <Routes>
       <Route path="/*" element={<OrchestratorPage />} />
