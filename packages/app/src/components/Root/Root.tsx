@@ -27,6 +27,8 @@ import GroupIcon from '@mui/icons-material/People';
 import SearchIcon from '@mui/icons-material/Search';
 import { makeStyles } from 'tss-react/mui';
 
+import { OrchestratorIcon } from '@janus-idp/backstage-plugin-orchestrator';
+
 import LogoFull from './LogoFull';
 import LogoIcon from './LogoIcon';
 
@@ -97,6 +99,11 @@ export const Root = ({
         />
         {/* End global nav */}
         <SidebarDivider />
+        <SidebarItem
+          icon={OrchestratorIcon as IconComponent}
+          to="orchestrator"
+          text="Orchestrator"
+        />
         <SidebarScrollWrapper>
           {/* Items in this group will be scrollable if they run out of space */}
         </SidebarScrollWrapper>

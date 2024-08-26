@@ -18,8 +18,10 @@ backend:
     # Uncomment the following host directive to bind to specific interfaces
     # host: 127.0.0.1
   csp:
-    connect-src: ["'self'", 'http:', 'https:']
-    # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+    frame-ancestors: ['http://localhost:3000', 'http://localhost:7007']
+    script-src: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+    script-src-elem: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+    connect-src: ["'self'", 'http:', 'https:', 'data:'] # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
     origin: http://localhost:3000
@@ -80,3 +82,14 @@ catalog:
 
 dynamicPlugins:
   frontend: {}
+
+orchestrator:
+  sonataFlowService:
+    baseUrl: http://localhost
+    port: 8899
+    autoStart: true
+    workflowsSource:
+      gitRepositoryUrl: https://github.com/parodos-dev/backstage-orchestrator-workflows
+      localPath: /tmp/orchestrator/repository
+  dataIndexService:
+    url: http://localhost:8899

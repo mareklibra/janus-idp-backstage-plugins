@@ -53,7 +53,8 @@
     "react-dom": "^18.0.0",
     "react-router": "^6.23.0",
     "react-router-dom": "^6.23.0",
-    "tss-react": "^4.9.10"
+    "tss-react": "^4.9.10",
+    "@janus-idp/backstage-plugin-orchestrator": "*"
   },
   "devDependencies": {
     "@backstage/cli": "0.26.11",
